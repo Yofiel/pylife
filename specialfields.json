@@ -1,0 +1,12 @@
+{
+  "bonus": {
+    "1000": "Hoje é dia de pagamento. Receba R$ 1000!",
+    "100": "Dia de sorte! Você achou R$ 100 na rua!",
+    "5000": "Você achou um cachorro perdido e por isso receberá uma recompensa de R$ 5000!"
+  },
+  "loss": {
+    "-400": "Pneu furou... R$ 400 é o valor de um novo.",
+    "-2000": "Você sofreu um golpe! Lá se vai R$ 2000...",
+    "-300": "Você tem um bom coração e por isso decidiu doar R$ 300 de cesta básica!"
+  }
+}
