@@ -1,55 +1,33 @@
-#!/usr/bin/env python3
-import random
 import json
+import random
+
+from views import *
+from models import Player
 
 
 N = 10
 BR = 3
 P = 4
 
-class Player:
-    def __init__(self, name):
-        self._name = name
-        self._money = 1000
-        self._position = 0
-
-    def __str__(self):
-        return f'Player: {self.name}; Saldo: {self.money}; Posição: {self.position}'
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def money(self):
-        return self._money
-
-    @money.setter
-    def money(self, money):
-        self._money = money
-
-    @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def position(self, position):
-        self._position = position
-
 
 def init_players():
-    num = int(input('number of players: '))
+    num = insert_players_number()
 
-    if not 2 <= num <= 4:
-        print('Invalid... try again!')
+    try:
+        if not 2 <= int(num) <= 4:
+            raise ValueError
+        else:
+            num = int(num)
+    except ValueError:
+        invalid_players_quantity_print()
         return init_players()
 
     players = []
     while True:
-        name = input('player name: ')
+        name = insert_player_name()
 
         if not name or name.isspace():
-            print('Invalid')
+            invalid_player_name_print()
             continue
 
         new_player = Player(name)
@@ -110,35 +88,18 @@ def check_winner(players):
         if (player.money > winner.money or (player.money >= winner.money and player.position > winner.position)):
             winner = player
 
-    print(f'Parabéns {winner.name}, você venceu com R$ {winner.money} e na posição {winner.position}!')
-
-    print("\nRESULTADOS:")
-    for player in players:
-        print(player)
-
-
-def confirmation_print():
-    input('Pressione qualquer tecla para continuar.\n')
-
-
-def bankruptcy_print(player):
-    print(f'{player.name} faliu! Hora de dizer adeus...')
-    print(f'{player.name} saiu do jogo!')
-
-
-def end_match_print(player):
-    print(f'Jogo finalizado! {player.name} chegou no fim da jornada, hora de contabilizar os saldos!')
+    return winner
 
 
 def start_game(game_path, players):
     while True:
         for i in range(len(players)):
-            print(f'Sua vez, {players[i].name}.')
+            your_turn_print(players[i])
             confirmation_print()
 
             drawn_number = spin_roulette()
 
-            print(f'Número sorteado: {drawn_number}. Andando {drawn_number} casas!')
+            movement_print(drawn_number)
             confirmation_print()
 
             players[i].position += drawn_number
@@ -164,7 +125,7 @@ def start_game(game_path, players):
                 else:
                     break
 
-            print(f'{players[i].name} está na casa {players[i].position} com saldo de R$ {players[i].money}')
+            status_update_print(players[i])
             confirmation_print()
 
 
@@ -174,7 +135,8 @@ def main():
         sort_players(players)
         game_path = init_path()
         start_game(game_path, players)
-        check_winner(players)
+        winner = check_winner(players)
+        results_print(players, winner)
 
         decision = input('Deseja jogar outra partida? [S/n]: ')
 
