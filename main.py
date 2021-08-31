@@ -7,6 +7,35 @@ N = 10
 BR = 3
 P = 4
 
+class Player:
+    def __init__(self, name):
+        self._name = name
+        self._money = 1000
+        self._position = 0
+
+    def __str__(self):
+        return f'Player: {self.name}; Saldo: {self.money}; Posição: {self.position}'
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def money(self):
+        return self._money
+
+    @money.setter
+    def money(self, money):
+        self._money = money
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, position):
+        self._position = position
+
 
 def init_players():
     num = int(input('number of players: '))
@@ -23,7 +52,8 @@ def init_players():
             print('Invalid')
             continue
 
-        players.append([name, 1000, 0])
+        new_player = Player(name)
+        players.append(new_player)
 
         if len(players) == num:
             break
@@ -75,14 +105,12 @@ def remove_player(players, player):
 
 
 def check_winner(players):
-    for i in range(len(players)):
-        if i == 0:
-            winner = players[i]
-            continue
-        elif (players[i][1] > winner[1] or (players[i][1] >= winner[1] and players[i][2] == N)):
-            winner = players[i]
+    winner = players[0]
+    for player in players:
+        if (player.money > winner.money or (player.money >= winner.money and player.position > winner.position)):
+            winner = player
 
-    print(f'Parabéns {winner[0]}, você venceu com R$ {winner[1]} e na posição {winner[2]}!')
+    print(f'Parabéns {winner.name}, você venceu com R$ {winner.money} e na posição {winner.position}!')
 
     print("\nRESULTADOS:")
     for player in players:
@@ -94,18 +122,18 @@ def confirmation_print():
 
 
 def bankruptcy_print(player):
-    print(f'{player[0]} faliu! Hora de dizer adeus...')
-    print(f'{player[0]} saiu do jogo!')
+    print(f'{player.name} faliu! Hora de dizer adeus...')
+    print(f'{player.name} saiu do jogo!')
 
 
 def end_match_print(player):
-    print(f'Jogo finalizado! {player[0]} chegou no fim da jornada, hora de contabilizar os saldos!')
+    print(f'Jogo finalizado! {player.name} chegou no fim da jornada, hora de contabilizar os saldos!')
 
 
 def start_game(game_path, players):
     while True:
         for i in range(len(players)):
-            print(f'Sua vez, {players[i][0]}.')
+            print(f'Sua vez, {players[i].name}.')
             confirmation_print()
 
             drawn_number = spin_roulette()
@@ -113,18 +141,18 @@ def start_game(game_path, players):
             print(f'Número sorteado: {drawn_number}. Andando {drawn_number} casas!')
             confirmation_print()
 
-            players[i][2] += drawn_number
+            players[i].position += drawn_number
 
-            if players[i][2] >= len(game_path) - 1:
-                players[i][2] = len(game_path) - 1
+            if players[i].position >= len(game_path) - 1:
+                players[i].position = len(game_path) - 1
                 end_match_print(players[i])
                 return players
 
-            if game_path[players[i][2]] != 0:
-                print(game_path[players[i][2]][1])
-                players[i][1] += int(game_path[players[i][2]][0])
+            if game_path[players[i].position] != 0:
+                print(game_path[players[i].position][1])
+                players[i].money += int(game_path[players[i].position][0])
 
-            if players[i][1] < 0:
+            if players[i].money < 0:
                 bankruptcy_print(players[i])
                 remove_player(players, players[i])
                 confirmation_print()
@@ -136,7 +164,7 @@ def start_game(game_path, players):
                 else:
                     break
 
-            print(f'{players[i][0]} está na casa {players[i][2]} com saldo de R$ {players[i][1]}')
+            print(f'{players[i].name} está na casa {players[i].position} com saldo de R$ {players[i].money}')
             confirmation_print()
 
 
