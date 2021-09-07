@@ -8,7 +8,7 @@ def results_text(players, removed_players, winner):
         for player in removed_players:
             text += str(player) + "\n"
     else:
-        text += "NINGUÉM FALIU NESSA PARTIDA!"
+        text += "NINGUÉM FALIU NESSA PARTIDA!\n"
 
     return text
 
