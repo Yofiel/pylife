@@ -2,11 +2,45 @@
   "bonus": {
     "1000": "Hoje é dia de pagamento. Receba R$ 1000!",
     "100": "Dia de sorte! Você achou R$ 100 na rua!",
-    "5000": "Você achou um cachorro perdido e por isso receberá uma recompensa de R$ 5000!"
+    "5000": "Você achou um cachorro perdido e por isso receberá uma recompensa de R$ 5000!",
+    "400": "Rendimento da poupança chegou! Receba R$ 400!",
+    "1300": "Comissão informal da venda de um imóvel. Receba R$ 1000!",
+    "600": "Antigo celular vendido. Receba R$ 600!",
+    "2500": "Apostou na vitória do seu time do coração e ganhou R$ 2500!",
+    "200": "Revendeu aquele perfume bom. Receba R$ 200!",
+    "755": "Dinheiro não cai do céu, mas você acabou de receber R$ 755!",
+    "1200": "Dia de receber o dinheiro do aluguel. Receba R$ 1200!",
+    "6": "E aí, carinha que mora logo ali? Quer 1 dólar?",
+    "350": "Parece que o anúncio aleatório da internet era verdadeiro. Você ganhou R$ 350!",
+    "999": "O esquema de pirâmide está dando certo... por enquanto. Receba R$ 999!",
+    "45": "Noite do barulho resultou em um trocado. Ganhou R$ 45!",
+    "2100": "O investimento em criptomoeda deu certo. Receba R$ 2100!",
+    "800": "Ouro encontrado, venda certa, dinheiro no bolso. Receba R$ 800!",
+    "1500": "Competição de quem come mais. Você é guloso, comeu tudo e ganhou R$ 1500 como prêmio!",
+    "20": "Estavam te devendo R$ 20 e nem mesmo você sabia...",
+    "1": "Você achou uma moeda de R$ 1 na rua... legal.",
+    "320": "Alguém pagou sua conta de energia. Agora você tem R$ 320 livres!"
   },
   "loss": {
     "-400": "Pneu furou... R$ 400 é o valor de um novo.",
     "-2000": "Você sofreu um golpe! Lá se vai R$ 2000...",
-    "-300": "Você tem um bom coração e por isso decidiu doar R$ 300 de cesta básica!"
+    "-300": "Você tem um bom coração e por isso decidiu doar R$ 300 de cesta básica!",
+    "-2500": "Você não deveria ter jogado poker. Lá se vai R$ 2500...",
+    "-100": "Perdeu a carteira com R$ 100...",
+    "-700": "O seguro do celular não cobre quedas de 25 andares. Hora de pagar R$ 700 para consertar.",
+    "-250": "Quis um teclado com RGB, recebeu um tijolo. Perdeu R$ 250.",
+    "-1200": "Senhor Madruga pediu dinheiro emprestado. Você é trouxa, pagou R$ 1200!",
+    "-400": "Você ficou doente e precisou pagar R$ 400 em remédios.",
+    "-6": "E aí, carinha que mora logo ali? Passa 1 dólar!",
+    "-150": "Passou correndo no semáforo? Pague a multa de R$ 150!",
+    "-1999": "O esquema de pirâmide não deu certo. Pague R$ 1999!",
+    "-4000": "Uma descarga elétrica queimou seu computador de R$ 4000... hora de comprar um novo.",
+    "-290": "Ado, ado, ado, perde R$ 290 quem é azarado... no caso, você.",
+    "-550": "A venda de cacau não deu muito certo. Prejuízo de R$ 550.",
+    "-25": "Hora do pedágio. Pague R$ 25!",
+    "-10": "R$ 10 em ingredientes perdidos por incompetência sua!",
+    "-1450": "R$ 1450 de prejuízo por causa de seu pessímo investimento!",
+    "-200": "Você fez uma doação de R$ 200 para uma instituição de crianças carentes.",
+    "-1100": "Você bebeu demais e não se lembra de nada, mas em sua carteira tem um comprovante de pagamento de R$ 1100 da noite anterior."
   }
 }
