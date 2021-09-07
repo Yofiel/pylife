@@ -5,7 +5,7 @@ class Player:
         self._position = 0
 
     def __str__(self):
-        return f'Player: {self.name}; Saldo: {self.money}; Posição: {self.position}'
+        return f"Player: {self.name}; Saldo: {self.money}; Posição: {self.position}"
 
     @property
     def name(self):
