@@ -2,7 +2,7 @@ from sys import exit
 
 import pygame
 
-from main import create_players, sort_players
+from main import create_players, sort_players, init_path
 
 # tamanhos
 WIDTH = 800
@@ -184,10 +184,14 @@ def main():
 
         names = name_input_view()
         print(names)
+
         players = create_players(names)
         sort_players(players)
-
         print(players)
+
+        path = init_path()
+        print(path)
+
         draw_window()
 
 
