@@ -10,31 +10,12 @@ BR = 10  # B = S (sorte); R = revés
 P = 10  # P = número de casas a serem avançadas
 
 
-def init_players():
-    num = insert_players_number()
-
-    try:
-        if not 2 <= int(num) <= 4:
-            raise ValueError
-        else:
-            num = int(num)
-    except ValueError:
-        invalid_players_quantity_print()
-        return init_players()
-
+def create_players(players_name):
     players = []
-    while True:
-        name = insert_player_name()
 
-        if not name or name.isspace():
-            invalid_player_name_print()
-            continue
-
+    for name in players_name:
         new_player = Player(name)
         players.append(new_player)
-
-        if len(players) == num:
-            break
 
     return players
 

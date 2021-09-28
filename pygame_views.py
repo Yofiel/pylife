@@ -2,6 +2,8 @@ from sys import exit
 
 import pygame
 
+from main import create_players, sort_players
+
 # tamanhos
 WIDTH = 800
 HEIGHT = 600
@@ -10,6 +12,7 @@ HEIGHT = 600
 COLOR_BLACK = pygame.Color(0, 0, 0)
 COLOR_WHITE = pygame.Color(255, 255, 255)
 COLOR_GREEN = pygame.Color(1, 91, 32)
+COLOR_RED = pygame.Color(240, 0, 0)
 
 # inicializando jogo
 pygame.init()
@@ -25,14 +28,15 @@ pygame.display.set_caption("Pylife")
 FONT = pygame.font.Font(None, 32)
 
 
-def init_players_view():
+def name_input_view():
     user_text = ""
-    players = []
+    names = []
 
     # definicao da caixa de texto para nome
     input_rect = pygame.Rect(200, 200, 140, 32)
     input_rect_active_color = pygame.Color(0, 0, 200)
     input_rect_inactive_color = pygame.Color(240, 240, 240)
+    input_rect_error_color = pygame.Color(COLOR_RED)
     input_rect_current_color = input_rect_inactive_color
 
     # definicao do botao de confirmacao do nome
@@ -41,6 +45,7 @@ def init_players_view():
     button_text_surface = button_font.render("Confirmar", True, (255, 255, 255))
 
     active = False
+    error = False
 
     while True:
         for event in pygame.event.get():
@@ -55,12 +60,17 @@ def init_players_view():
                     active = False
 
                 if button_rect.collidepoint(event.pos):
-                    players.append(user_text)
+                    if not user_text or user_text.isspace() or not user_text.isalpha():
+                        error = True
+                        break
+                    else:
+                        error = False
+
+                    names.append(user_text)
                     user_text = ""
 
-                    if len(players) == 4:
-                        print("Quantidade máxima de jogadores atingida")
-                        return players
+                    if len(names) == 4:
+                        return names
 
             if event.type == pygame.KEYDOWN:
                 # lendo o que é digitado
@@ -79,6 +89,9 @@ def init_players_view():
             input_rect_current_color = input_rect_active_color
         else:
             input_rect_current_color = input_rect_inactive_color
+
+        if error:
+            input_rect_current_color = input_rect_error_color
 
         # desenhando retangulo do input na tela
         pygame.draw.rect(WIN, input_rect_current_color, input_rect, 2)
@@ -115,7 +128,11 @@ def main():
                 run = False
                 pygame.quit()
 
-        players = init_players_view()
+        names = name_input_view()
+        print(names)
+        players = create_players(names)
+        sort_players(players)
+
         print(players)
         draw_window()
 
