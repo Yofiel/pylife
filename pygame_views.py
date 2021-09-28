@@ -1,20 +1,25 @@
 from sys import exit
 
 import pygame
-from pygame.locals import QUIT
 
 WIDTH = 800
 HEIGHT = 600
-BACKGROUND_COLOR = pygame.Color(0, 0, 0)
+
+COLOR_BLACK = pygame.Color(0, 0, 0)
+COLOR_WHITE = pygame.Color(255, 255, 255)
+COLOR_GREEN = pygame.Color("green")
 
 # inicializando jogo
 pygame.init()
-clock = pygame.time.Clock()
-main_surface = pygame.display.set_mode((WIDTH, HEIGHT))
+
+FPS = 60
+
+# propriedades da janela
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pylife")
 
 # definindo fonte base
-base_font = pygame.font.Font(None, 32)
+FONT = pygame.font.Font(None, 32)
 
 
 def init_players_view():
@@ -25,6 +30,9 @@ def init_players_view():
     input_rect_active_color = pygame.Color(0, 0, 200)
     input_rect_inactive_color = pygame.Color(240, 240, 240)
     input_rect_current_color = input_rect_inactive_color
+
+    button_rect = pygame.Rect(200, 240, 100, 30)
+
     active = False
 
     while True:
@@ -47,7 +55,7 @@ def init_players_view():
                             user_text += event.unicode
 
         # preenchendo background com cor
-        main_surface.fill(BACKGROUND_COLOR)
+        WIN.fill(COLOR_BLACK)
 
         # atualizando cor do input
         if active:
@@ -56,30 +64,41 @@ def init_players_view():
             input_rect_current_color = input_rect_inactive_color
 
         # desenhando retangulo do input na tela
-        pygame.draw.rect(main_surface, input_rect_current_color, input_rect, 2)
+        pygame.draw.rect(WIN, input_rect_current_color, input_rect, 2)
+
+        # desenhando botao
+        pygame.draw.rect(WIN, COLOR_GREEN, button_rect)
 
         # criando camada para o texto
-        text_surface = base_font.render(user_text, True, (255, 255, 255))
+        text_surface = FONT.render(user_text, True, (255, 255, 255))
 
         # desenhando camanda de texto na tela na posicao da caixa de input
-        main_surface.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
+        WIN.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
 
         # caixa de input acompanha o tamanho da camada de texto
         input_rect.w = max(140, text_surface.get_width() + 10)
 
         # atualizando tela parcialmente
-        pygame.display.flip()
-
-        clock.tick(60)
+        draw_window()
 
 
-# Game loop
-init_players_view()
+def draw_window():
+    pygame.display.update()
 
-for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-        pygame.quit()
-        sys.exit()
 
-pygame.display.update()
-clock.tick(15)
+def main():
+    clock = pygame.time.Clock()
+    run = True
+    while run:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+    draw_window()
+
+
+if __name__ == "__main__":
+    init_players_view()

@@ -132,7 +132,7 @@ def start_game(game_path, players, removed_players):
                 removed_players.append(players[i])
                 confirmation_print()
 
-                # Se todos os jogadores falirem com exceção de um, a rodada será encerrada
+                # Se todos falirem com exceção de um, a rodada será encerrada
                 if len(removed_players) == len(players) - 1:
                     break
                 else:
