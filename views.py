@@ -42,7 +42,8 @@ def bankruptcy_print(player):
 
 def end_match_print(player):
     print(
-        f"Jogo finalizado! {player.name} chegou no fim da jornada, hora de contabilizar os saldos!"
+        f"Jogo finalizado! {player.name} chegou no fim da jornada, hora de contabilizar"
+        + "os saldos!"
     )
 
 
