@@ -1,8 +1,10 @@
+import tkinter as tk
 from sys import exit
+from tkinter import messagebox
 
 import pygame
 
-from service import create_players, init_path, sort_players
+from service import create_players, init_path, sort_players, spin_roulette, start_round
 
 # tamanhos
 WIDTH = 800
@@ -27,58 +29,61 @@ pygame.display.set_caption("Pylife")
 # definindo fonte base
 FONT = pygame.font.Font(None, 32)
 
+# carregando background
+BOARD = pygame.image.load("assets/map.png")
+
 # posicao caminho
 caminho = [
-    (0, 0),
-    (100, 0),
-    (200, 0),
-    (300, 0),
-    (400, 0),
-    (500, 0),
-    (600, 0),
-    (700, 0),
-    (0, 100),
-    (100, 100),
-    (200, 100),
-    (300, 100),
-    (400, 100),
-    (500, 100),
-    (600, 100),
-    (700, 100),
-    (0, 200),
-    (100, 200),
-    (200, 200),
-    (300, 200),
-    (400, 200),
-    (500, 200),
-    (600, 200),
-    (700, 200),
-    (0, 300),
-    (100, 300),
-    (200, 300),
-    (300, 300),
-    (400, 300),
-    (500, 300),
-    (600, 300),
-    (700, 300),
-    (0, 400),
-    (100, 400),
-    (200, 400),
-    (300, 400),
-    (400, 400),
-    (500, 400),
-    (600, 400),
-    (700, 400),
-    (0, 500),
-    (100, 500),
-    (200, 500),
-    (300, 500),
-    (400, 500),
-    (500, 500),
-    (600, 500),
-    (700, 500),
-    (0, 600),
-    (100, 600),
+    (93, 558),
+    (115, 509),
+    (97, 451),
+    (112, 402),
+    (71, 362),
+    (67, 305),
+    (81, 250),
+    (65, 207),
+    (123, 199),
+    (88, 150),
+    (65, 102),
+    (82, 60),
+    (135, 34),
+    (139, 83),
+    (162, 117),
+    (188, 164),
+    (230, 137),
+    (236, 94),
+    (231, 50),
+    (305, 52),
+    (318, 92),
+    (358, 62),
+    (389, 102),
+    (358, 139),
+    (316, 174),
+    (294, 216),
+    (278, 263),
+    (274, 310),
+    (316, 353),
+    (348, 389),
+    (368, 427),
+    (389, 466),
+    (410, 502),
+    (442, 470),
+    (428, 432),
+    (437, 400),
+    (484, 387),
+    (434, 356),
+    (473, 328),
+    (369, 293),
+    (428, 284),
+    (482, 276),
+    (535, 264),
+    (576, 232),
+    (630, 250),
+    (640, 285),
+    (588, 303),
+    (616, 340),
+    (638, 378),
+    (638, 422),
 ]
 
 
@@ -178,8 +183,26 @@ def name_input_view():
         pygame.display.update()
 
 
-def board_view(players, path):
+def send_message(message, title="Aviso"):
+    root = tk.Tk()
+    root.overrideredirect(1)
+    root.withdraw()
+    messagebox.showinfo(title, message)
+    root.destroy()
+
+
+def board_view(players, path, removed_players):
+    # definicao do botao da roleta
+    spin_roulette_text = create_text("SORTEAR NUMERO", COLOR_WHITE)
+    spin_roulette_rect = create_text_box(300, 560)
+
+    current_player = -1
     while True:
+        if current_player == 3:
+            current_player = -1
+
+        current_player += 1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -189,8 +212,21 @@ def board_view(players, path):
                 if event.key == pygame.K_RETURN:
                     return
 
-        # preenchendo background com cor
-        WIN.fill(COLOR_BLACK)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if spin_roulette_rect.collidepoint(event.pos):
+                    drawn_number = spin_roulette()
+                    send_message(f"NÚMERO SORTEADO: {drawn_number}")
+                    start_round(
+                        path, players[current_player], removed_players, drawn_number
+                    )
+                    print(players[current_player])
+
+        # preenchendo background com imagem
+        WIN.blit(BOARD, (0, 0))
+
+        # desenhando retangulo e texto do input na tela
+        spin_roulette_rect.w = spin_roulette_text.get_width() + 10
+        draw_text_box(WIN, spin_roulette_text, spin_roulette_rect, COLOR_BLACK)
 
         # atualizando tela
         pygame.display.update()
@@ -211,8 +247,9 @@ def main():
         players = create_players(names)
         sort_players(players)
         path = init_path()
+        removed_players = []
 
-        board_view(players, path)
+        board_view(players, path, removed_players)
 
         pygame.display.update()
 

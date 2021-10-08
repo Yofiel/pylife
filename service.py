@@ -78,48 +78,19 @@ def check_winner(players):
     return winner
 
 
-def start_game(game_path, players, removed_players):
-    while True:
-        # Os jogadores falidos serão removidos de fato após o fim da rodada vigente
-        remove_players(players, removed_players)
-        for i in range(len(players)):
-            if len(players) == 1:
-                end_match_print(players[0])
-                confirmation_print()
-                return players
+def start_round(game_path, player, removed_players, drawn_number):
+    player.position += drawn_number
 
-            your_turn_print(players[i])
-            confirmation_print()
+    if player.position >= len(game_path) - 1:
+        player.position = len(game_path) - 1
+        return player
 
-            drawn_number = spin_roulette()
+    if game_path[player.position] != 0:
+        print(game_path[player.position][1])
+        player.money += int(game_path[player.position][0])
 
-            movement_print(drawn_number)
-            confirmation_print()
-
-            players[i].position += drawn_number
-
-            if players[i].position >= len(game_path) - 1:
-                players[i].position = len(game_path) - 1
-                end_match_print(players[i])
-                return players
-
-            if game_path[players[i].position] != 0:
-                print(game_path[players[i].position][1])
-                players[i].money += int(game_path[players[i].position][0])
-
-            if players[i].money < 0:
-                bankruptcy_print(players[i])
-                removed_players.append(players[i])
-                confirmation_print()
-
-                # Se todos falirem com exceção de um, a rodada será encerrada
-                if len(removed_players) == len(players) - 1:
-                    break
-                else:
-                    continue
-
-            status_update_print(players[i])
-            confirmation_print()
+    if player.money < 0:
+        removed_players.append(player)
 
 
 def save_game_results(players, removed_players, winner):
@@ -127,23 +98,23 @@ def save_game_results(players, removed_players, winner):
         file.write(results_text(players, removed_players, winner))
 
 
-def main():
-    while True:
-        players = init_players()
-        removed_players = []
-        sort_players(players)
-        game_path = init_path()
-        start_game(game_path, players, removed_players)
-        winner = check_winner(players)
-        results_print(players, removed_players, winner)
-        save_game_results(players, removed_players, winner)
-
-        decision = input("Deseja jogar outra partida? [S/n]: ")
-
-        if decision.strip().lower() == "n":
-            print("Finalizando jogo...")
-            break
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     while True:
+#         players = init_players()
+#         removed_players = []
+#         sort_players(players)
+#         game_path = init_path()
+#         start_round(game_path, players, removed_players)
+#         winner = check_winner(players)
+#         results_print(players, removed_players, winner)
+#         save_game_results(players, removed_players, winner)
+#
+#         decision = input("Deseja jogar outra partida? [S/n]: ")
+#
+#         if decision.strip().lower() == "n":
+#             print("Finalizando jogo...")
+#             break
+#
+#
+# if __name__ == "__main__":
+#     main()
