@@ -2,7 +2,7 @@ from sys import exit
 
 import pygame
 
-from main import create_players, sort_players, init_path
+from main import create_players, init_path, sort_players
 
 # tamanhos
 WIDTH = 800
@@ -82,6 +82,22 @@ caminho = [
 ]
 
 
+def create_text(text, color, font=None, size=24, style=None):
+    if not font:
+        font = pygame.font.Font(style, size)
+
+    return font.render(text, True, color)
+
+
+def create_text_box(x, y, width=100, height=30):
+    return pygame.Rect(x, y, width, height)
+
+
+def draw_text_box(window, text, rect, rect_color, border=0):
+    pygame.draw.rect(window, rect_color, rect, border)
+    window.blit(text, (rect.x + 5, rect.y + 5))
+
+
 def name_input_view():
     user_text = ""
     names = []
@@ -94,9 +110,8 @@ def name_input_view():
     input_rect_current_color = input_rect_inactive_color
 
     # definicao do botao de confirmacao do nome
-    button_rect = pygame.Rect(200, 240, 100, 30)
-    button_font = pygame.font.Font(None, 24)
-    button_text_surface = button_font.render("Confirmar", True, (255, 255, 255))
+    button_text = create_text("Confirmar", COLOR_WHITE)
+    button_rect = create_text_box(200, 240)
 
     active = False
     error = False
@@ -147,28 +162,38 @@ def name_input_view():
         if error:
             input_rect_current_color = input_rect_error_color
 
-        # desenhando retangulo do input na tela
-        pygame.draw.rect(WIN, input_rect_current_color, input_rect, 2)
-
-        # desenhando botao
-        pygame.draw.rect(WIN, COLOR_GREEN, button_rect)
-        WIN.blit(button_text_surface, (button_rect.x + 5, button_rect.y + 5))
-
         # criando camada para o texto
-        text_surface = FONT.render(user_text, True, (255, 255, 255))
+        input_text = create_text(user_text, COLOR_WHITE, FONT)
 
-        # desenhando camanda de texto na tela na posicao da caixa de input
-        WIN.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
+        # desenhando retangulo e texto do input na tela
+        draw_text_box(WIN, input_text, input_rect, input_rect_current_color, 2)
 
         # caixa de input acompanha o tamanho da camada de texto
-        input_rect.w = max(140, text_surface.get_width() + 10)
+        input_rect.w = max(140, input_text.get_width() + 10)
+
+        # desenhando botao
+        draw_text_box(WIN, button_text, button_rect, COLOR_GREEN)
 
         # atualizando tela
         pygame.display.update()
 
 
-def draw_window():
-    pygame.display.update()
+def board_view(players, path):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return
+
+        # preenchendo background com cor
+        WIN.fill(COLOR_BLACK)
+
+        # atualizando tela
+        pygame.display.update()
 
 
 def main():
@@ -183,16 +208,13 @@ def main():
                 pygame.quit()
 
         names = name_input_view()
-        print(names)
-
         players = create_players(names)
         sort_players(players)
-        print(players)
-
         path = init_path()
-        print(path)
 
-        draw_window()
+        board_view(players, path)
+
+        pygame.display.update()
 
 
 if __name__ == "__main__":
