@@ -1,149 +1,220 @@
-import json
-import random
+from sys import exit
 
-from views import *
-from models import Player
+import pygame
+
+from service import create_players, init_path, sort_players
+
+# tamanhos
+WIDTH = 800
+HEIGHT = 600
+
+# cores
+COLOR_BLACK = pygame.Color(0, 0, 0)
+COLOR_WHITE = pygame.Color(255, 255, 255)
+COLOR_GREEN = pygame.Color(1, 91, 32)
+COLOR_RED = pygame.Color(240, 0, 0)
+
+# inicializando jogo
+pygame.init()
+
+# fps
+FPS = 60
+
+# propriedades da janela
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pylife")
+
+# definindo fonte base
+FONT = pygame.font.Font(None, 32)
+
+# posicao caminho
+caminho = [
+    (0, 0),
+    (100, 0),
+    (200, 0),
+    (300, 0),
+    (400, 0),
+    (500, 0),
+    (600, 0),
+    (700, 0),
+    (0, 100),
+    (100, 100),
+    (200, 100),
+    (300, 100),
+    (400, 100),
+    (500, 100),
+    (600, 100),
+    (700, 100),
+    (0, 200),
+    (100, 200),
+    (200, 200),
+    (300, 200),
+    (400, 200),
+    (500, 200),
+    (600, 200),
+    (700, 200),
+    (0, 300),
+    (100, 300),
+    (200, 300),
+    (300, 300),
+    (400, 300),
+    (500, 300),
+    (600, 300),
+    (700, 300),
+    (0, 400),
+    (100, 400),
+    (200, 400),
+    (300, 400),
+    (400, 400),
+    (500, 400),
+    (600, 400),
+    (700, 400),
+    (0, 500),
+    (100, 500),
+    (200, 500),
+    (300, 500),
+    (400, 500),
+    (500, 500),
+    (600, 500),
+    (700, 500),
+    (0, 600),
+    (100, 600),
+]
 
 
-N = 50  # N = número de casas do tabuleiro
-BR = 10  # B = S (sorte); R = revés
-P = 10  # P = número de casas a serem avançadas
+def create_text(text, color, font=None, size=24, style=None):
+    if not font:
+        font = pygame.font.Font(style, size)
+
+    return font.render(text, True, color)
 
 
-def create_players(players_name):
-    players = []
-
-    for name in players_name:
-        new_player = Player(name)
-        players.append(new_player)
-
-    return players
+def create_text_box(x, y, width=100, height=30):
+    return pygame.Rect(x, y, width, height)
 
 
-def sort_players(players):
-    random.shuffle(players)
+def draw_text_box(window, text, rect, rect_color, border=0):
+    pygame.draw.rect(window, rect_color, rect, border)
+    window.blit(text, (rect.x + 5, rect.y + 5))
 
 
-def init_path():
-    game_path = [0] * N
-    init_special_fields(game_path)
-    return game_path
+def name_input_view():
+    user_text = ""
+    names = []
 
+    # definicao da caixa de texto para nome
+    input_rect = pygame.Rect(200, 200, 140, 32)
+    input_rect_active_color = pygame.Color(0, 0, 200)
+    input_rect_inactive_color = pygame.Color(240, 240, 240)
+    input_rect_error_color = pygame.Color(COLOR_RED)
+    input_rect_current_color = input_rect_inactive_color
 
-def init_special_fields(game_path):
-    with open("specialfields.json", "r") as file:
-        data = json.load(file)
+    # definicao do botao de confirmacao do nome
+    button_text = create_text("Confirmar", COLOR_WHITE)
+    button_rect = create_text_box(200, 240)
 
-    count = 0
-    while count < BR:
-        bonus_position = random.randint(0, len(game_path) - 1)
+    active = False
+    error = False
 
-        if game_path[bonus_position] != 0:
-            continue
-
-        loss_position = random.randint(0, len(game_path) - 1)
-
-        if game_path[loss_position] != 0:
-            continue
-
-        bonus_choice = _, _ = random.choice(list(data["bonus"].items()))
-        loss_choice = _, _ = random.choice(list(data["loss"].items()))
-
-        game_path[bonus_position] = bonus_choice
-        game_path[loss_position] = loss_choice
-
-        count += 1
-
-
-def spin_roulette():
-    return random.randint(1, P)
-
-
-def remove_players(players, removed_players):
-    if not removed_players:
-        return
-
-    for player in removed_players:
-        if player in players:
-            players.remove(player)
-
-
-def check_winner(players):
-    winner = players[0]
-    for player in players:
-        if player.money > winner.money or (
-            player.money >= winner.money and player.position > winner.position
-        ):
-            winner = player
-
-    return winner
-
-
-def start_game(game_path, players, removed_players):
     while True:
-        # Os jogadores falidos serão removidos de fato após o fim da rodada vigente
-        remove_players(players, removed_players)
-        for i in range(len(players)):
-            if len(players) == 1:
-                end_match_print(players[0])
-                confirmation_print()
-                return players
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
 
-            your_turn_print(players[i])
-            confirmation_print()
-
-            drawn_number = spin_roulette()
-
-            movement_print(drawn_number)
-            confirmation_print()
-
-            players[i].position += drawn_number
-
-            if players[i].position >= len(game_path) - 1:
-                players[i].position = len(game_path) - 1
-                end_match_print(players[i])
-                return players
-
-            if game_path[players[i].position] != 0:
-                print(game_path[players[i].position][1])
-                players[i].money += int(game_path[players[i].position][0])
-
-            if players[i].money < 0:
-                bankruptcy_print(players[i])
-                removed_players.append(players[i])
-                confirmation_print()
-
-                # Se todos falirem com exceção de um, a rodada será encerrada
-                if len(removed_players) == len(players) - 1:
-                    break
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_rect.collidepoint(event.pos):
+                    active = True
                 else:
-                    continue
+                    active = False
 
-            status_update_print(players[i])
-            confirmation_print()
+                if button_rect.collidepoint(event.pos):
+                    if not user_text or user_text.isspace() or not user_text.isalpha():
+                        error = True
+                        break
+                    else:
+                        error = False
+
+                    names.append(user_text)
+                    user_text = ""
+
+                    if len(names) == 4:
+                        return names
+
+            if event.type == pygame.KEYDOWN:
+                # lendo o que é digitado
+                if active:
+                    if event.key == pygame.K_BACKSPACE:
+                        user_text = user_text[:-1]
+                    else:
+                        if len(user_text) < 25:
+                            user_text += event.unicode
+
+        # preenchendo background com cor
+        WIN.fill(COLOR_BLACK)
+
+        # atualizando cor do input
+        if active:
+            input_rect_current_color = input_rect_active_color
+        else:
+            input_rect_current_color = input_rect_inactive_color
+
+        if error:
+            input_rect_current_color = input_rect_error_color
+
+        # criando camada para o texto
+        input_text = create_text(user_text, COLOR_WHITE, FONT)
+
+        # desenhando retangulo e texto do input na tela
+        draw_text_box(WIN, input_text, input_rect, input_rect_current_color, 2)
+
+        # caixa de input acompanha o tamanho da camada de texto
+        input_rect.w = max(140, input_text.get_width() + 10)
+
+        # desenhando botao
+        draw_text_box(WIN, button_text, button_rect, COLOR_GREEN)
+
+        # atualizando tela
+        pygame.display.update()
 
 
-def save_game_results(players, removed_players, winner):
-    with open("results.txt", "a") as file:
-        file.write(results_text(players, removed_players, winner))
+def board_view(players, path):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return
+
+        # preenchendo background com cor
+        WIN.fill(COLOR_BLACK)
+
+        # atualizando tela
+        pygame.display.update()
 
 
 def main():
-    while True:
-        players = init_players()
-        removed_players = []
+    clock = pygame.time.Clock()
+    run = True
+    while run:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+        names = name_input_view()
+        players = create_players(names)
         sort_players(players)
-        game_path = init_path()
-        start_game(game_path, players, removed_players)
-        winner = check_winner(players)
-        results_print(players, removed_players, winner)
-        save_game_results(players, removed_players, winner)
+        path = init_path()
 
-        decision = input("Deseja jogar outra partida? [S/n]: ")
+        board_view(players, path)
 
-        if decision.strip().lower() == "n":
-            print("Finalizando jogo...")
-            break
+        pygame.display.update()
 
 
 if __name__ == "__main__":
