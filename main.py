@@ -9,9 +9,9 @@ from service import (
     create_players,
     init_path,
     is_over,
+    move_player,
     sort_players,
     spin_roulette,
-    start_round,
 )
 
 # tamanhos
@@ -284,6 +284,7 @@ def board_view(players, players_sprites, path, removed_players):
     spin_roulette_text = create_text("SORTEAR NUMERO", COLOR_WHITE)
     spin_roulette_rect = create_text_box(300, 560)
 
+    current_space = ()
     current_player = -1
     while True:
         if current_player == len(players) - 1:
@@ -303,11 +304,6 @@ def board_view(players, players_sprites, path, removed_players):
         # atualizando tela
         pygame.display.update()
 
-        if is_over(players[current_player], removed_players):
-            winner = check_winner(players)
-            send_message("Jogo finalizado!", "Fim da jornada")
-            send_message(f"{winner.name}, você é o vencedor", "Parabéns")
-
         event_happened = False
         while not event_happened:
             event = pygame.event.wait()
@@ -320,16 +316,29 @@ def board_view(players, players_sprites, path, removed_players):
                 if spin_roulette_rect.collidepoint(event.pos):
                     drawn_number = spin_roulette()
                     send_message(f"NÚMERO SORTEADO: {drawn_number}")
-                    start_round(
+                    current_space = move_player(
                         path, players[current_player], removed_players, drawn_number
                     )
                     print(players[current_player])
                     event_happened = True
 
+        if current_space:
+            blit_players(players, players_sprites)
+            pygame.display.update()
+            send_message(f"{current_space[1]}", f"{players[current_player].name}")
+
         if players[current_player] in removed_players:
+            send_message(f"Jogador(a) {players[current_player].name} faliu!", "Bye Bye")
             players.pop(current_player)
             players_sprites.pop(current_player)
             current_player -= 1
+
+        if is_over(players[current_player], removed_players):
+            blit_players(players, players_sprites)
+            pygame.display.update()
+            winner = check_winner(players)
+            send_message("Jogo finalizado!", "Fim da jornada")
+            send_message(f"{winner.name}, você é o vencedor", "Parabéns")
 
 
 def main():

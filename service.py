@@ -78,7 +78,7 @@ def check_winner(players):
     return winner
 
 
-def start_round(game_path, player, removed_players, drawn_number):
+def move_player(game_path, player, removed_players, drawn_number):
     player.position += drawn_number
 
     if player.position >= len(game_path) - 1:
@@ -90,6 +90,8 @@ def start_round(game_path, player, removed_players, drawn_number):
 
     if player.money < 0:
         removed_players.append(player)
+
+    return game_path[player.position]
 
 
 def save_game_results(players, removed_players, winner):
