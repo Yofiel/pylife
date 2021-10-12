@@ -1,15 +1,23 @@
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, color):
         self._name = name
+        self._color = color
         self._money = 1000
         self._position = 0
 
     def __str__(self):
-        return f"Player: {self.name}; Saldo: {self.money}; Posição: {self.position}"
+        return (
+            f"Player {self.color}: {self.name}; Saldo: {self.money}; "
+            + f"Posição: {self.position}"
+        )
 
     @property
     def name(self):
         return self._name
+
+    @property
+    def color(self):
+        return self._color
 
     @property
     def money(self):
