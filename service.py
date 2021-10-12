@@ -9,11 +9,11 @@ BR = 10  # B = S (sorte); R = revés
 P = 10  # P = número de casas a serem avançadas
 
 
-def create_players(players_name):
+def create_players(players_name, colors):
     players = []
 
-    for name in players_name:
-        new_player = Player(name)
+    for index, name in enumerate(players_name):
+        new_player = Player(name, colors[index])
         players.append(new_player)
 
     return players
@@ -58,13 +58,13 @@ def spin_roulette():
     return random.randint(1, P)
 
 
-def remove_players(players, removed_players):
-    if not removed_players:
-        return
+def is_over(player, removed_players):
+    if player.position == N - 1:
+        return True
+    if len(removed_players) == 3:
+        return True
 
-    for player in removed_players:
-        if player in players:
-            players.remove(player)
+    return False
 
 
 def check_winner(players):
@@ -83,7 +83,6 @@ def start_round(game_path, player, removed_players, drawn_number):
 
     if player.position >= len(game_path) - 1:
         player.position = len(game_path) - 1
-        return player
 
     if game_path[player.position] != 0:
         print(game_path[player.position][1])
