@@ -347,7 +347,9 @@ def board_view(players, players_sprites, path, removed_players):
             pygame.display.update()
             winner = check_winner(players)
             send_message("Jogo finalizado!", "Fim da jornada")
-            send_message(f"{winner.name}, você GANHOU!", "Parabéns")
+            send_message(
+                f"{winner.name}, você GANHOU com R${winner.money}!", "Parabéns"
+            )
             return winner
 
 
