@@ -281,7 +281,6 @@ def blit_players(players, players_sprites):
 
 def board_view(players, players_sprites, path, removed_players):
     # definicao do botao da roleta
-    spin_roulette_text = create_text("SORTEAR NUMERO", COLOR_WHITE)
     spin_roulette_rect = create_text_box(300, 560)
 
     current_space = ()
@@ -295,10 +294,18 @@ def board_view(players, players_sprites, path, removed_players):
         # preenchendo background com imagem
         WIN.blit(BOARD, (0, 0))
 
+        # criando texto do botao de sorteio
+        spin_roulette_text = create_text(
+            f"{players[current_player].name} ({players[current_player].color}),"
+            + " sorteie um número!",
+            COLOR_WHITE,
+        )
+
         # desenhando retangulo e texto do input na tela
         spin_roulette_rect.w = spin_roulette_text.get_width() + 10
         draw_text_box(WIN, spin_roulette_text, spin_roulette_rect, COLOR_BLACK)
 
+        # desenha os jogadores
         blit_players(players, players_sprites)
 
         # atualizando tela
@@ -323,6 +330,7 @@ def board_view(players, players_sprites, path, removed_players):
                     event_happened = True
 
         if current_space:
+            WIN.blit(BOARD, (0, 0))
             blit_players(players, players_sprites)
             pygame.display.update()
             send_message(f"{current_space[1]}", f"{players[current_player].name}")
@@ -334,11 +342,13 @@ def board_view(players, players_sprites, path, removed_players):
             current_player -= 1
 
         if is_over(players[current_player], removed_players):
+            WIN.blit(BOARD, (0, 0))
             blit_players(players, players_sprites)
             pygame.display.update()
             winner = check_winner(players)
             send_message("Jogo finalizado!", "Fim da jornada")
-            send_message(f"{winner.name}, você é o vencedor", "Parabéns")
+            send_message(f"{winner.name}, você GANHOU!", "Parabéns")
+            return winner
 
 
 def main():
