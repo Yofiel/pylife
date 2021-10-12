@@ -2,7 +2,6 @@ import json
 import random
 
 from models import Player
-from views import *
 
 N = 50  # N = número de casas do tabuleiro
 BR = 10  # B = S (sorte); R = revés
@@ -94,28 +93,6 @@ def move_player(game_path, player, removed_players, drawn_number):
     return game_path[player.position]
 
 
-def save_game_results(players, removed_players, winner):
-    with open("results.txt", "a") as file:
-        file.write(results_text(players, removed_players, winner))
-
-
-# def main():
-#     while True:
-#         players = init_players()
-#         removed_players = []
-#         sort_players(players)
-#         game_path = init_path()
-#         start_round(game_path, players, removed_players)
-#         winner = check_winner(players)
-#         results_print(players, removed_players, winner)
-#         save_game_results(players, removed_players, winner)
-#
-#         decision = input("Deseja jogar outra partida? [S/n]: ")
-#
-#         if decision.strip().lower() == "n":
-#             print("Finalizando jogo...")
-#             break
-#
-#
-# if __name__ == "__main__":
-#     main()
+# def save_game_results(players, removed_players, winner):
+#    with open("results.txt", "a") as file:
+#        file.write(results_text(players, removed_players, winner))
