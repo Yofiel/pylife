@@ -21,7 +21,7 @@ repos:
         types: [ python ]
         exclude: '.*/migrations/.*'
         args: [
-            '--line-length=110',
+            '--line-length=88',
             '--multi-line=3',
             '--force-grid-wrap=0',
             '--trailing-comma',
