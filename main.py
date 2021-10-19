@@ -20,6 +20,8 @@ HEIGHT = 600
 
 # cores
 COLOR_BLACK = pygame.Color(0, 0, 0)
+COLOR_DARK_GRAY = pygame.Color(51, 51, 51)
+COLOR_GRAY = pygame.Color(82, 82, 82)
 COLOR_WHITE = pygame.Color(255, 255, 255)
 COLOR_GREEN = pygame.Color(1, 91, 32)
 COLOR_RED = pygame.Color(240, 0, 0)
@@ -162,7 +164,7 @@ def name_input_view():
                     if event.key == pygame.K_BACKSPACE:
                         user_text = user_text[:-1]
                     else:
-                        if len(user_text) < 10:
+                        if len(user_text) < 8:
                             user_text += event.unicode
 
         # preenchendo background com cor
@@ -279,9 +281,34 @@ def blit_players(players, players_sprites):
         WIN.blit(sprite.image, sprite.rect)
 
 
+def live_rank_text_formatter(players):
+    text = ""
+    for player in players:
+        text += str(player) + "\n"
+
+    return text
+
+
+def blit_multiline_text(rect, text, font, color=COLOR_WHITE):
+    max_width, _ = rect.size
+    x, y = rect.x + 5, rect.y + 5
+
+    for line in text.splitlines():
+        line_surface = create_text(line, color, size=20)
+        # line_surface = font.render(line, 0, color)
+        line_width, line_height = line_surface.get_size()
+        if x + line_width >= max_width:
+            x = rect.x + 5
+            y += line_height
+        WIN.blit(line_surface, (x, y))
+
+
 def board_view(players, players_sprites, path, removed_players):
     # definicao do botao da roleta
     spin_roulette_rect = create_text_box(300, 560)
+
+    # definicao da caixa do placar
+    live_rank_rect = create_text_box(450, 5, 345, 100)
 
     current_space = ()
     current_player = -1
@@ -303,7 +330,12 @@ def board_view(players, players_sprites, path, removed_players):
 
         # desenhando retangulo e texto do input na tela
         spin_roulette_rect.w = spin_roulette_text.get_width() + 10
-        draw_text_box(WIN, spin_roulette_text, spin_roulette_rect, COLOR_BLACK)
+        draw_text_box(WIN, spin_roulette_text, spin_roulette_rect, COLOR_DARK_GRAY)
+
+        # desenhando retangulo e texto do live rank na tela
+        live_rank_text = live_rank_text_formatter(players)
+        pygame.draw.rect(WIN, COLOR_GRAY, live_rank_rect)
+        blit_multiline_text(live_rank_rect, live_rank_text, FONT)
 
         # desenha os jogadores
         blit_players(players, players_sprites)
@@ -326,8 +358,9 @@ def board_view(players, players_sprites, path, removed_players):
                     current_space = move_player(
                         path, players[current_player], removed_players, drawn_number
                     )
-                    print(players[current_player])
                     event_happened = True
+                else:
+                    send_message('Clique em "SORTEIE UM NÚMERO!"')
 
         if current_space:
             WIN.blit(BOARD, (0, 0))
