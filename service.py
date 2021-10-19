@@ -84,7 +84,6 @@ def move_player(game_path, player, removed_players, drawn_number):
         player.position = len(game_path) - 1
 
     if game_path[player.position] != 0:
-        print(game_path[player.position][1])
         player.money += int(game_path[player.position][0])
 
     if player.money < 0:
