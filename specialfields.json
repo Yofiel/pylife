@@ -19,7 +19,18 @@
     "1500": "Competição de quem come mais. Você é guloso, comeu tudo e ganhou R$ 1500 como prêmio!",
     "20": "Estavam te devendo R$ 20 e nem mesmo você sabia...",
     "1": "Você achou uma moeda de R$ 1 na rua... legal.",
-    "320": "Alguém enviou R$ 320 para sua conta!"
+    "320": "Alguém enviou R$ 320 para sua conta!",
+    "350": "Receba R$ 350 pela vitória no jogo do bicho!",
+    "300": "Receba R$ 300 pelo freela que você fez!",
+    "400": "Receba R$ 400 do auxílio do governo!",
+    "10": "Você ganhou um trocado por ajudar a vender flores no parque. Receba R$ 10!",
+    "25": "Valeu a pena participar do bingo. Você recebeu R$ 25 como prêmio!",
+    "85": "O sistema de cashback do banco falhou? Apareceu mais R$ 85 na sua conta bancária...",
+    "125": "Rinha de galo é ilegal... Tome aqui R$ 125 ganhados com seu passa tempo ilícito",
+    "1000": "Um estranho te ofereceu R$ 1000 para realizar uma entrega e você aceitou torcendo para não ser preso...",
+    "555": "Um parente seu morreu e você recebeu R$ 555 em herança!",
+    "30": "Você enviou um convite afiliado para registro em uma rede social e ganhou R$ 30 como recompensa",
+    "50": "Você achou uma nota de R$ 50 reais molhada no chão... É só secar ela e ser feliz!"
   },
   "loss": {
     "-400": "Pneu furou... R$ 400 é o valor de um novo.",
@@ -41,6 +52,7 @@
     "-10": "R$ 10 em ingredientes perdidos por incompetência sua!",
     "-1450": "R$ 1450 de prejuízo por causa de seu pessímo investimento!",
     "-200": "Você fez uma doação de R$ 200 para uma instituição de crianças carentes.",
-    "-1100": "Você bebeu demais e não se lembra de nada, mas em sua carteira tem um comprovante de pagamento de R$ 1100 da noite anterior."
+    "-1100": "Você bebeu demais e não se lembra de nada, mas em sua carteira tem um comprovante de pagamento de R$ 1100 da noite anterior.",
+    "-2020": "Você apostou que o mundo acabaria em 2020... você errou. Pague R$ 2020"
   }
 }
