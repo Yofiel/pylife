@@ -110,8 +110,8 @@ def create_text_box(x, y, width=100, height=30):
     return pygame.Rect(x, y, width, height)
 
 
-def draw_text_box(window, text, rect, rect_color, border=0):
-    pygame.draw.rect(window, rect_color, rect, border)
+def draw_text_box(window, text, rect, rect_color, border=0, border_radius=0):
+    pygame.draw.rect(window, rect_color, rect, border, border_radius=border_radius)
     window.blit(text, (rect.x + 5, rect.y + 5))
 
 
@@ -183,10 +183,12 @@ def name_input_view():
         input_text = create_text(user_text, COLOR_WHITE, FONT)
 
         # desenhando retangulo e texto do input na tela
-        draw_text_box(WIN, input_text, input_rect, input_rect_current_color, 2)
+        draw_text_box(
+            WIN, input_text, input_rect, input_rect_current_color, 2, border_radius=2
+        )
 
         # desenhando botao
-        draw_text_box(WIN, button_text, button_rect, COLOR_GREEN)
+        draw_text_box(WIN, button_text, button_rect, COLOR_GREEN, border_radius=2)
 
         # atualizando tela
         pygame.display.update()
@@ -330,11 +332,17 @@ def board_view(players, players_sprites, path, removed_players):
 
         # desenhando retangulo e texto do input na tela
         spin_roulette_rect.w = spin_roulette_text.get_width() + 10
-        draw_text_box(WIN, spin_roulette_text, spin_roulette_rect, COLOR_DARK_GRAY)
+        draw_text_box(
+            WIN,
+            spin_roulette_text,
+            spin_roulette_rect,
+            COLOR_DARK_GRAY,
+            border_radius=3,
+        )
 
         # desenhando retangulo e texto do live rank na tela
         live_rank_text = live_rank_text_formatter(players)
-        pygame.draw.rect(WIN, COLOR_GRAY, live_rank_rect)
+        pygame.draw.rect(WIN, COLOR_GRAY, live_rank_rect, border_radius=8)
         blit_multiline_text(live_rank_rect, live_rank_text, FONT)
 
         # desenha os jogadores
