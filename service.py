@@ -5,7 +5,7 @@ from models import Player
 
 N = 50  # N = número de casas do tabuleiro
 BR = 10  # B = S (sorte); R = revés
-P = 10  # P = número de casas a serem avançadas
+P = 6  # P = número de casas a serem avançadas
 
 
 def create_players(players_name, colors):
