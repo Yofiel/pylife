@@ -34,12 +34,12 @@ def init_special_fields(game_path):
 
     count = 0
     while count < BR:
-        bonus_position = random.randint(0, len(game_path) - 1)
+        bonus_position = random.randint(1, len(game_path) - 2)
 
         if game_path[bonus_position] != 0:
             continue
 
-        loss_position = random.randint(0, len(game_path) - 1)
+        loss_position = random.randint(1, len(game_path) - 2)
 
         if game_path[loss_position] != 0:
             continue
