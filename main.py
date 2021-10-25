@@ -291,7 +291,7 @@ def live_rank_text_formatter(players):
     return text
 
 
-def blit_multiline_text(rect, text, font, color=COLOR_WHITE):
+def blit_multiline_text(rect, text, color=COLOR_WHITE):
     max_width, _ = rect.size
     x, y = rect.x + 5, rect.y + 5
 
@@ -343,7 +343,7 @@ def board_view(players, players_sprites, path, removed_players):
         # desenhando retangulo e texto do live rank na tela
         live_rank_text = live_rank_text_formatter(players)
         pygame.draw.rect(WIN, COLOR_GRAY, live_rank_rect, border_radius=8)
-        blit_multiline_text(live_rank_rect, live_rank_text, FONT)
+        blit_multiline_text(live_rank_rect, live_rank_text)
 
         # desenha os jogadores
         blit_players(players, players_sprites)
