@@ -255,7 +255,6 @@ def color_input_view(players):
 
 def send_message(message, title="Aviso"):
     root = tk.Tk()
-    root.overrideredirect(1)
     root.withdraw()
     messagebox.showinfo(title, message)
     root.destroy()
