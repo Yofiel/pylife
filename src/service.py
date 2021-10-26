@@ -1,7 +1,8 @@
 import json
 import random
+from os.path import join
 
-from models import Player
+from .models import Player
 
 N = 50  # N = número de casas do tabuleiro
 BR = 10  # B = S (sorte); R = revés
@@ -24,12 +25,8 @@ def sort_players(players):
 
 def init_path():
     game_path = [0] * N
-    init_special_fields(game_path)
-    return game_path
 
-
-def init_special_fields(game_path):
-    with open("specialfields.json", "r") as file:
+    with open(join("assets", "specialfields.json"), "r") as file:
         data = json.load(file)
 
     count = 0
@@ -51,6 +48,8 @@ def init_special_fields(game_path):
         game_path[loss_position] = loss_choice
 
         count += 1
+
+    return game_path
 
 
 def spin_roulette():
