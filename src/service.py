@@ -2,8 +2,7 @@ import json
 import random
 from os.path import join
 
-from src.dao import save_winner
-
+from .dao import get_scores, save_winner
 from .models import Player
 
 N = 50  # N = número de casas do tabuleiro
@@ -95,3 +94,7 @@ def move_player(game_path, player, removed_players, drawn_number):
 
 def save_game_result(winner):
     save_winner(winner)
+
+
+def get_best_players():
+    return get_scores()

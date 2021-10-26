@@ -108,6 +108,86 @@ def draw_text_box(window, text, rect, rect_color, border=0, border_radius=0):
     window.blit(text, (rect.x + 5, rect.y + 5))
 
 
+def menu_view():
+    new_game_text = create_text("NOVO JOGO", COLOR_WHITE, size=40)
+    new_game_rect = create_text_box(315, 210, width=180, height=35)
+
+    rank_text = create_text("TOP PLAYERS", COLOR_WHITE, size=40)
+    rank_rect = create_text_box(300, 260, width=210, height=35)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if new_game_rect.collidepoint(event.pos):
+                    # 1 indica novo jogo
+                    return 1
+
+                if rank_rect.collidepoint(event.pos):
+                    # 2 indica rank
+                    return 2
+
+        WIN.fill(COLOR_BLACK)
+
+        # desenhando botao do new_game
+        draw_text_box(WIN, new_game_text, new_game_rect, COLOR_BLUE, border_radius=2)
+
+        # desenhando botao do rank
+        draw_text_box(WIN, rank_text, rank_rect, COLOR_DARK_GRAY, border_radius=2)
+
+        # atualizando tela
+        pygame.display.update()
+
+
+def rank_view():
+    return_text = create_text("VOLTAR PARA MENU", COLOR_WHITE)
+    return_rect = create_text_box(305, 100, width=180)
+
+    rank_rect = create_text_box(230, 210, width=345, height=100)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        WIN.fill(COLOR_BLACK)
+
+        # desenhando botao de voltar para menu
+        draw_text_box(WIN, return_text, return_rect, COLOR_RED, border_radius=2)
+
+        # desenhando retangulo e texto do live rank na tela
+        players = get_best_players()
+
+        rank_text = ""
+        for player in players:
+            rank_text += (
+                f"Jogador(a) {player[0]} - Quantidade de vitórias: {player[1]}" + "\n"
+            )
+
+        pygame.draw.rect(WIN, COLOR_GRAY, rank_rect, border_radius=8)
+        blit_multiline_text(rank_rect, rank_text)
+
+        # atualizando tela
+        pygame.display.update()
+
+        event_happened = False
+        while not event_happened:
+            event = pygame.event.wait()
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if return_rect.collidepoint(event.pos):
+                        return
+
+
 def name_input_view():
     user_text = ""
     names = []
@@ -139,13 +219,18 @@ def name_input_view():
                     active = False
 
                 if button_rect.collidepoint(event.pos):
-                    if not user_text or user_text.isspace() or not user_text.isalpha():
+                    if (
+                        not user_text
+                        or user_text.isspace()
+                        or not user_text.isalpha()
+                        or user_text.upper() in names
+                    ):
                         error = True
                         break
                     else:
                         error = False
 
-                    names.append(user_text)
+                    names.append(user_text.upper())
                     user_text = ""
 
                     if len(names) == 4:
@@ -277,7 +362,7 @@ def blit_players(players, players_sprites):
         WIN.blit(sprite.image, sprite.rect)
 
 
-def live_rank_text_formatter(players):
+def rank_text_formatter(players):
     text = ""
     for player in players:
         text += str(player) + "\n"
@@ -335,7 +420,7 @@ def board_view(players, players_sprites, path, removed_players):
         )
 
         # desenhando retangulo e texto do live rank na tela
-        live_rank_text = live_rank_text_formatter(players)
+        live_rank_text = rank_text_formatter(players)
         pygame.draw.rect(WIN, COLOR_GRAY, live_rank_rect, border_radius=8)
         blit_multiline_text(live_rank_rect, live_rank_text)
 
@@ -398,6 +483,15 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
+
+        # True significa que o jogador estara no menu
+        while True:
+            choice = menu_view()
+
+            if choice == 1:
+                break
+            elif choice == 2:
+                rank_view()
 
         names = name_input_view()
         colors = color_input_view(names)
