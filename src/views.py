@@ -407,10 +407,7 @@ def main():
         path = init_path()
         removed_players = []
 
-        board_view(players, players_sprites, path, removed_players)
+        winner = board_view(players, players_sprites, path, removed_players)
+        save_game_result(winner)
 
         pygame.display.update()
-
-
-if __name__ == "__main__":
-    main()
