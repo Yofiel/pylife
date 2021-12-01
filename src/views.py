@@ -199,6 +199,9 @@ def name_input_view():
     input_rect_error_color = pygame.Color(COLOR_RED)
     input_rect_current_color = input_rect_inactive_color
 
+    # texto informativo
+    info_text = create_text("Informe o nome do jogador", COLOR_WHITE)
+
     # definicao do botao de confirmacao do nome
     button_text = create_text("Confirmar", COLOR_WHITE)
     button_rect = create_text_box(200, 240)
@@ -256,6 +259,9 @@ def name_input_view():
 
         if error:
             input_rect_current_color = input_rect_error_color
+
+        # desenhando texto informativo
+        WIN.blit(info_text, (200, 180))
 
         # criando camada para o texto
         input_text = create_text(user_text, COLOR_WHITE, FONT)
